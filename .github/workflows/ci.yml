@@ -20,6 +20,12 @@ jobs:
         with:
           node-version: '22'
 
+      - name: Show current directory
+        run: pwd
+
+      - name: List repository files
+        run: ls -la
+
       - name: Install dependencies
         run: npm install
 
