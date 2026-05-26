@@ -13,11 +13,8 @@ env:
   NODE_VERSION: '22'
 
 jobs:
-  basic-check:
+  test:
     runs-on: ubuntu-latest
-
-    env: 
-      JOB_NAME: basic-check
 
     steps:
       - name: Checkout repository
@@ -28,30 +25,18 @@ jobs:
         with:
           node-version: ${{env.NODE_VERION}}
 
-      - name: Show current directory
-        run: pwd
-
-      - name: Print Github context
-        run: |
-          echo "Repository: $GITHUB_REPOSITORY"
-          echo "Branch ref: $GITHUB_REF"
-          echo "Actor: $GITHUB_ACTOR"
-          echo "Workflow: $GITHUB_WORKFLOW"
-
-      - name: Print custom environment variables
-        run: |
-          echo "App name: $APP_NAME"
-          echo "Node version: $NODE_VERSION"
-
-      - name: List repository files
-        run: ls -la
-
       - name: Install dependencies
         run: npm install
 
       - name: Run tests
         run: npm test
 
+
+  summary:
+    runs-on: ubuntu-latest
+    needs: test
+
+    steps:
       - name: Complete workflow
         run: echo "Basic CI workflow completed successfully"
 
