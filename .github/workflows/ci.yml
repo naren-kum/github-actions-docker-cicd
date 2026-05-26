@@ -67,7 +67,7 @@ jobs:
           echo "Workflow: $GITHUB_WORKFLOW" >> reports/ci-summary.txt
 
       - name: Upload CI summary artifact
-        uses: action/upload-artifact@v4
+        uses: actions/upload-artifact@v4
         with:
           name: ci-summary-report
           path: reports/ci-summary.txt
