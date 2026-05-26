@@ -15,17 +15,22 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Print message
-        run: echo "GitHub Actions workflow started"
-
-      - name: Show runner information
-        run: |
-          echo "Runner OS: $RUNNER_OS"
-          echo "Repository: $GITHUB_REPOSITORY"
-          echo "Branch/Ref: $GITHUB_REF"
+      - name: show current directory
+        uses: pwd
 
       - name: List repository files
-        run: ls -la
+        uses: ls -la
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Run tests
+        run: npm test
 
       - name: Complete workflow
         run: echo "Basic CI workflow completed successfully"
