@@ -1,0 +1,31 @@
+name: Basic CI
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  basic-check:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Print message
+        run: echo "GitHub Actions workflow started"
+
+      - name: Show runner information
+        run: |
+          echo "Runner OS: $RUNNER_OS"
+          echo "Repository: $GITHUB_REPOSITORY"
+          echo "Branch/Ref: $GITHUB_REF"
+
+      - name: List repository files
+        run: ls -la
+
+      - name: Complete workflow
+        run: echo "Basic CI workflow completed successfully"
