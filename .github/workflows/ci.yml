@@ -7,9 +7,17 @@ on:
   pull_request:
   workflow_dispatch:
 
+
+env:
+  APP_NAME: github-actions=docker-cicd
+  NODE_VERSION: '22'
+
 jobs:
   basic-check:
     runs-on: ubuntu-latest
+
+    env: 
+      JOB_NAME: basic-check
 
     steps:
       - name: Checkout repository
@@ -18,10 +26,22 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '22'
+          node-version: ${{env.NODE_VERION}}
 
       - name: Show current directory
         run: pwd
+
+      - name: Print Github context
+        run: |
+          echo "Repository: $GITHUB_REPOSITORY"
+          echo "Branch ref: $GITHUB_REF"
+          echo "Actor: $GITHUB_ACTOR"
+          echo "Workflow: $GITHUB_WORKFLOW"
+
+      - name: Print custom environment variables
+        run: |
+          echo "App name: $APP_NAME"
+          echo "Node version: $NODE_VERSION"
 
       - name: List repository files
         run: ls -la
@@ -34,3 +54,6 @@ jobs:
 
       - name: Complete workflow
         run: echo "Basic CI workflow completed successfully"
+
+      - name: Print job environment variable
+        run: "echo Job name: $JOB_NAME"
