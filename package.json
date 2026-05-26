@@ -1,0 +1,10 @@
+{
+  "name": "github-actions-docker-cicd",
+  "version": "1.0.0",
+  "description": "Simple Node.js app for GitHub Actions Docker CI/CD practice",
+  "main": "src/app.js",
+  "scripts": {
+    "test": "node tests/app.test.js",
+    "start": "node src/app.js"
+  }
+}
