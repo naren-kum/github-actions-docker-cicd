@@ -23,6 +23,13 @@ jobs:
       - name: Show current directory
         run: pwd
 
+      - name: Print Github context
+        run: |
+          echo "Repository: $GITHUB_REPOSITORY"
+          echo "Branch ref: $GITHUB_REF"
+          echo "Actor: $GITHUB_ACTOR"
+          echo "Workflow: $GITHUB_WORKFLOW"
+
       - name: List repository files
         run: ls -la
 
