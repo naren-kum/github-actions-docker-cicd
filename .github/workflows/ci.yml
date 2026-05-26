@@ -31,6 +31,14 @@ jobs:
       - name: Run tests
         run: npm test
 
+      - name: Message for main branche
+        if: github.ref == 'refs/head/main'
+        run: echo "This workflow is running on main branch"
+
+      - name: Message for pull pull_request
+        if: github.event_name == 'pull_request'
+        run: echo "This workflow is running for a pull request"
+
 
   summary:
     runs-on: ubuntu-latest
