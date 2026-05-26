@@ -9,7 +9,7 @@ on:
 
 
 env:
-  APP_NAME: github-actions=docker-cicd
+  APP_NAME: github-actions-docker-cicd
   NODE_VERSION: '22'
 
 jobs:
@@ -23,7 +23,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: ${{env.NODE_VERION}}
+          node-version: ${{env.NODE_VERSION}}
 
       - name: Install dependencies
         run: npm install
@@ -31,8 +31,8 @@ jobs:
       - name: Run tests
         run: npm test
 
-      - name: Message for main branche
-        if: github.ref == 'refs/head/main'
+      - name: Message for main branch
+        if: github.ref == 'refs/heads/main'
         run: echo "This workflow is running on main branch"
 
       - name: Message for pull pull_request
@@ -47,6 +47,3 @@ jobs:
     steps:
       - name: Complete workflow
         run: echo "Basic CI workflow completed successfully"
-
-      - name: Print job environment variable
-        run: "echo Job name: $JOB_NAME"
