@@ -58,5 +58,17 @@ jobs:
     needs: Docker-build
 
     steps:
-      - name: Complete workflow
-        run: echo "Basic CI workflow completed successfully"
+      - name: Create CI summary repositort
+        run: |
+          mkdir -p reports
+          echo "CI pipeline completed successfully" > reports/ci-summary.txt
+          echo "Repository: $GITHUB_REPOSITORY" >> reports/ci-summary.txt
+          echo "Commit SHA: $GITHUB_SHA" >> reports/ci-summary.txt
+          echo "Workflow: $GITHUB_WORKFLOW" >> reports/ci-summary.txt
+
+      - name: Upload CI summary artifact
+        uses: action/upload-artifact@v4
+        with:
+          name: ci-summary-report
+          path: reports/ci-summary.txt
+         
