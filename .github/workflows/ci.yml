@@ -37,7 +37,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: ${{env.NODE_VERSION}}
+          node-version: ${{ env.NODE_VERSION }}
 
       - name: Install dependencies
         run: npm install
@@ -49,11 +49,11 @@ jobs:
         if: github.ref == 'refs/heads/main'
         run: echo "This workflow is running on main branch"
 
-      - name: Message for pull pull_request
+      - name: Message for pull pull request
         if: github.event_name == 'pull_request'
         run: echo "This workflow is running for a pull request"
 
-  Docker-build:
+  docker-build:
     runs-on: ubuntu-latest
     needs: test
     env: 
@@ -66,8 +66,19 @@ jobs:
       - name: Build Docker image.
         run: docker build -t $IMAGE_NAME:${{ github.sha }} -t $IMAGE_NAME:latest .
 
+      - name: List images 
+        run: docker images
+
       - name: Run Docker container
         run: docker run --rm $IMAGE_NAME:${{ github.sha }}
+
+      - name: Scan Docker image with trivy
+        uses: aquasecurity/trivy-action@0.35.0
+        with:
+          image-ref: ${{ env.IMAGE_NAME }}:${{ github.sha }}
+          format: table
+          exit-code: '0' # Change exit-code to '1' to enforce a strict security gate.
+          severity: HIGH,CRITICAL
 
       - name: Validate Docker login secrets
         env:
@@ -86,27 +97,20 @@ jobs:
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
-
-      - name: Scan DOcker image with trivy
-        uses: aquasecurity/trivy-action@0.35.0
-        with:
-          image-ref: ${{ env.IMAGE_NAME }}:${{ github.sha }}
-          format: table
-          exit-code: '0' # Change exit-code to '1' to enforce a strict security gate.
-          severity: HIGH,CRITICAL
       
       - name: Push to Docker Hub
         run: |
-          docker push $IMAGE_NAME:latest
           docker push $IMAGE_NAME:${{ github.sha }}
+          docker push $IMAGE_NAME:latest
+          
         
 
   summary:
     runs-on: ubuntu-latest
-    needs: Docker-build
+    needs: docker-build
 
     steps:
-      - name: Create CI summary repositort
+      - name: Create CI summary report
         run: |
           mkdir -p reports
           echo "CI pipeline completed successfully" > reports/ci-summary.txt
