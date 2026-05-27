@@ -19,6 +19,20 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+
+      - name: Read environment name from GitHub Secret
+        run: echo "Deployment environment is configured from GitHub secrets"
+
+      - name: Validate environment secret exists
+        env:
+          ENVIRONMENT_NAME: ${{ secrets.ENVIRONMENT_NAME }}
+        run: |
+          if [ -z "$ENVIRONMENT_NAME" ]; then
+            echo "ENVIRONMENT_NAME secret is missing"
+            exit 1
+          fi
+
+          echo "ENVIRONMENT_NAME secret is configured"
       
       - name: Setup Node.js
         uses: actions/setup-node@v4
