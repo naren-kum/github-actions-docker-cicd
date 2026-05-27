@@ -28,11 +28,11 @@ jobs:
           ENVIRONMENT_NAME: ${{ secrets.ENVIRONMENT_NAME }}
         run: |
           if [ -z "$ENVIRONMENT_NAME" ]; then
-            echo "$ENVIRONMENT_NAME" secret is missing"
+            echo "ENVIRONMENT_NAME secret is missing"
             exit 1
           fi
 
-          echo "$ENVIRONMENT_NAME" secret is configured"
+          echo "ENVIRONMENT_NAME secret is configured"
       
       - name: Setup Node.js
         uses: actions/setup-node@v4
